@@ -1,1 +1,4 @@
-# java-image-gallery
+# Java-based image gallery
+
+Cool stuff
+
