@@ -3,6 +3,13 @@
  */
 package edu.au.cc.gallery;
 
+import java.util.Map;
+import java.util.HashMap;
+
+import spark.ModelAndView;
+import static spark.Spark.*;
+import spark.template.handlebars.HandlebarsTemplateEngine;
+
 public class App {
     public String getGreeting() {
         return "Hello Ginger.";
@@ -10,6 +17,17 @@ public class App {
 
     public static void main(String[] args) throws Exception {
        // System.out.println(new App().getGreeting());
-       UserAdmin.demo();
+//       UserAdmin.demo();
+		port(5000);
+    	    get("/hello", (req, res) -> "Hello World");
+
+	get("/goodbye", (req, rest) -> "Goodbye");
+
+	get("/greet/:name", (req, res) -> {
+		return "Hello " + req.params(":name");
+	});
+
+	
+	new Calculator().addRoutes();
     }
 }

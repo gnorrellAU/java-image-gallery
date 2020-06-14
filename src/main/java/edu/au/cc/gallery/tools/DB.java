@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 
 public class DB {
 
-	private static final String dbUrl = "jdbc:postgresql://m2-database.ceza2uidpxb7.us-east-1.rds.amazonaws.com/image_gallery";
+	private static final String dbUrl = "jdbc:postgresql://image-gallery.ceza2uidpxb7.us-east-1.rds.amazonaws.com/image_gallery";
         private Connection connection;
 
         private String getPassword() {
