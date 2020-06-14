@@ -12,13 +12,16 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class DB {
 
-	private static final String dbUrl = "jdbc:postgresql://m2-database.ceza2uidpxb7.us-east-1.rds.amazonaws.com/image_gallery";
-        private Connection connection;
+        private static final String dbUrl = "jdbc:postgresql://image-gallery.ceza2uidpxb7.us-east-1.rds.amazonaws.com/image_gallery";
+	
+	private Connection connection;
 
-        private String getPassword() {
+       /* private String getPassword() {
                 try(BufferedReader br = new BufferedReader(new FileReader("/home/ec2-user/.sql-passwd"))) {
                         String result = br.readLine();
                         return result;
@@ -27,12 +30,21 @@ public class DB {
                         System.exit(1);
                 }
                 return null;
-        }
+        }*/
+	private JSONObject getSecret() {
+		String s = Secrets.getSecretImageGallery();
+		return new JSONObject(s);
+	}
+	
+	private String getPassword(JSONObject secret) {
+		return secret.getString("password");
+	}
 
         public void connect() throws SQLException {
                 try {
                         Class.forName("org.postgresql.Driver");
-                        connection = DriverManager.getConnection(dbUrl, "image_gallery", getPassword());
+			JSONObject secret = getSecret();
+                        connection = DriverManager.getConnection(dbUrl, "image_gallery", getPassword(secret));
                 } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                         System.exit(1);
