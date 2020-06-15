@@ -34,21 +34,34 @@ public class Admin {
 			.render(new ModelAndView(model, "admin.hbs"));	
 	}
 
+	public String updateUser(Request req, Response res) throws SQLException {
+		String user = req.queryParams("user");
+		String password = req.queryParams("password");
+                String fullName = req.queryParams("full_name");
+                db.editUser(password, fullName, user);
+               res.redirect("/admin");
+	       	return "User " + user + " was edited.";
+	}
+
 	public String editUser(Request req, Response res) throws SQLException {
 		String user = req.queryParams("user");
-	//	Map<String, Object> model = new HashMap<String, Object>();
-          //      model.put("user", user);
-            //    return new HandlebarsTemplateEngine()
-              //          .render(new ModelAndView(model, "getUser.hbs"));
-		String password = req.queryParams("password");
-		String fullName = req.queryParams("full_name");
-		db.editUser(user, password, fullName);
-		return "User " + user + " was edited.";
+		System.out.println(user);
+		ArrayList<String> results = db.listUser(user);
+	       System.out.println(results);	
+		Map<String, Object> model = new HashMap<String, Object>();
+                model.put("user", results);
+                return new HandlebarsTemplateEngine()
+                        .render(new ModelAndView(model, "editUser.hbs"));
+//		String password = req.queryParams("password");
+//		String fullName = req.queryParams("full_name");
+//		db.editUser(user, password, fullName);
+//		return "User " + user + " was edited.";
 	}
 
 	public String deleteUser(Request req, Response res) throws SQLException {
 		String user = req.queryParams("user");
 		db.deleteUser(user);
+		 res.redirect("/admin");
 		return "User was deleted.";
 	}
 
@@ -57,6 +70,7 @@ public class Admin {
 		String password = req.queryParams("password");
 		String fullName = req.queryParams("full_name");
 		db.addUser(username, password, fullName);
+		res.redirect("/admin");
 		return "User was added."; 
 	}
 		
@@ -67,7 +81,7 @@ public class Admin {
         	get("/admin", (req, res) -> listUsers(req, res));
 		get("/admin/add", (req, res) -> addUsers(req, res));
 		get("/admin/edit", (req, res) -> editUser(req, res));
-	
+		get("/admin/edited", (req, res) -> updateUser(req, res));	
 		get("/admin/delete", (req, res) -> deleteUser(req, res));	
 	}
 }

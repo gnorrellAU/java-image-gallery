@@ -21,7 +21,8 @@ public class DB {
 	private static final String dbUrl = "jdbc:postgresql://image-gallery.ceza2uidpxb7.us-east-1.rds.amazonaws.com/image_gallery";
         private Connection connection;
 
-/*	private JSONObject getSecret() {
+  //	Secrets Manager
+	private JSONObject getSecret() {
 		String s = Secrets.getSecretImageGallery();
 		return new JSONObject(s);
 	}
@@ -41,8 +42,9 @@ public class DB {
                 }
 
         } 
-	
-  */      private String getPassword() {
+/*
+
+        private String getPassword() {
                 try(BufferedReader br = new BufferedReader(new FileReader("/home/ec2-user/.sql-passwd"))) {
                         String result = br.readLine();
                         return result;
@@ -65,6 +67,26 @@ public class DB {
                 }
 
         }
+*/
+	public ArrayList<String> listUser(String user) throws SQLException {
+                PreparedStatement stmt = connection.prepareStatement("select username, password, full_name from users where username=?");
+		stmt.setString(1, user);
+                ResultSet rs = stmt.executeQuery();
+                ArrayList<String> result = new ArrayList<String>();
+                while(rs.next()) {
+                        //System.out.println("added row");
+                      /*        result = result.concat("username: " + rs.getString(1) + "\n"
+                                          + "password: " + rs.getString(2) + "\n"
+                                          + "full name: " + rs.getString(3)
+                                          + "\n----------------------------------------\n");
+               */
+                        result.add(rs.getString(1));
+			result.add(rs.getString(2));
+			result.add(rs.getString(3));
+                }
+                rs.close();
+                return result;
+}
 
 public ArrayList<String> listUsers() throws SQLException {
                 PreparedStatement stmt = connection.prepareStatement("select username, password, full_name from users");
