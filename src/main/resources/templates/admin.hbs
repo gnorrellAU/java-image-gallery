@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head> 
+		<title>User Information</title>
+		<meta charset= "utf=8" />
+	</head>
+	<body>
+		<h1>Users:</h1>
+		<ul>
+			{{#each users}}
+			<li><a href = "/admin/edit?user={{this}}">{{this}}</a> 
+			<!--	<form action="/admin/delete" method="get">-->
+			<button type="button"> 
+				<a href="/admin/delete?user={{this}}">Delete User</a></button>
+				</form>
+			</li>
+					{{/each}}
+		</ul>
+		
+<!--		<form action="/admin/edit" method="post">
+			 password: <input type="text" name="password" /> <br/><br>
+                        full_name: <input type="text" name="full_name" /> <br/><br>
+			<input type= "submit" value="Edit User"/>
+		</form>
+-->
+		<h3>Add a User:</h3>
+		<form action="/admin/add" method="get">
+			username: <input type="text" name="username" /> <br/><br>
+			password: <input type="text" name="password" /> <br/><br>
+			full_name: <input type="text" name="full_name" /> <br/><br>
+			<input type="submit" value="Add User"/>
+
+	</body>
+	<footer>
+		<p>
+		<br><br><br><br>
+		I was not able to make the other pages connect back to this page. 
+			<br>	In order to see that a user was added or deleted, return back to this page and click refresh. 
+			<br>	Then you will see that the user was added or deleted from the database. 
+
+			<br><br>	Thank you. 
+		</p>
+</html>

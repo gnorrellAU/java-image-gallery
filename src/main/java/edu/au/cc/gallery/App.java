@@ -11,23 +11,26 @@ import static spark.Spark.*;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 public class App {
-    public String getGreeting() {
+
+	public String getGreeting() {
         return "Hello Ginger.";
     }
 
     public static void main(String[] args) throws Exception {
-       // System.out.println(new App().getGreeting());
-//       UserAdmin.demo();
+      DB db = new DB();
+      db.connect();
+	    // System.out.println(new App().getGreeting());
+       //UserAdmin.demo();
 		port(5000);
-    	    get("/hello", (req, res) -> "Hello World");
+  //  	    get("/hello", (req, res) -> "Hello World");
 
-	get("/goodbye", (req, rest) -> "Goodbye");
+//	get("/goodbye", (req, rest) -> "Goodbye");
 
-	get("/greet/:name", (req, res) -> {
-		return "Hello " + req.params(":name");
-	});
-
-	
-	new Calculator().addRoutes();
+//	get("/greet/:name", (req, res) -> {
+//		return "Hello " + req.params(":name");
+//	});
+	//String result = db.listUsers();
+//	System.out.println(result);	
+	new Admin().addRoutes();
     }
 }

@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -12,13 +13,36 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class DB {
 
 	private static final String dbUrl = "jdbc:postgresql://image-gallery.ceza2uidpxb7.us-east-1.rds.amazonaws.com/image_gallery";
         private Connection connection;
 
-        private String getPassword() {
+/*	private JSONObject getSecret() {
+		String s = Secrets.getSecretImageGallery();
+		return new JSONObject(s);
+	}
+	
+	private String getPassword(JSONObject secret) {
+		return secret.getString("password");
+	}
+
+        public void connect() throws SQLException {
+                try {
+                        Class.forName("org.postgresql.Driver");
+			JSONObject secret = getSecret();
+                        connection = DriverManager.getConnection(dbUrl, "image_gallery", getPassword(secret));
+                } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                        System.exit(1);
+                }
+
+        } 
+	
+  */      private String getPassword() {
                 try(BufferedReader br = new BufferedReader(new FileReader("/home/ec2-user/.sql-passwd"))) {
                         String result = br.readLine();
                         return result;
@@ -31,8 +55,10 @@ public class DB {
 
         public void connect() throws SQLException {
                 try {
+			System.out.println("connecting");
                         Class.forName("org.postgresql.Driver");
                         connection = DriverManager.getConnection(dbUrl, "image_gallery", getPassword());
+			System.out.println("connected");
                 } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                         System.exit(1);
@@ -40,17 +66,22 @@ public class DB {
 
         }
 
-public void listUsers() throws SQLException {
+public ArrayList<String> listUsers() throws SQLException {
                 PreparedStatement stmt = connection.prepareStatement("select username, password, full_name from users");
                 ResultSet rs = stmt.executeQuery();
-                while(rs.next()) {
-                        System.out.println("username: " + rs.getString(1) + "\n"
+		ArrayList<String> result = new ArrayList<String>();
+		while(rs.next()) {
+                     	//System.out.println("added row");
+		      /*	result = result.concat("username: " + rs.getString(1) + "\n"
                                           + "password: " + rs.getString(2) + "\n"
                                           + "full name: " + rs.getString(3)
-                                          + "\n----------------------------------------");
-                }
+                                          + "\n----------------------------------------\n");
+               */
+			result.add(rs.getString(1));       
+		}
                 rs.close();
-        }
+		return result;       
+}
 
         public boolean doesExist(String username) throws SQLException {
                 PreparedStatement stmt = connection.prepareStatement("SELECT * from users where username = ?");
