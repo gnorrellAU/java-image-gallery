@@ -8,7 +8,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.core.sync.RequestBody;
 
 public class S3 {
-    private static final Region region = Region.US_EAST_2;
+    private static final Region region = Region.US_EAST_1;
     private S3Client client;
 
     public void connect() {
@@ -35,7 +35,7 @@ public class S3 {
     }
 
     public static void demo() {
-	String bucketName = "edu.au.cc.image-gallery";
+	String bucketName = "edu.au.cc.image-gallery-bucket";
 	S3 s3 = new S3();
 	s3.connect();
 	//s3.createBucket(bucketName);
