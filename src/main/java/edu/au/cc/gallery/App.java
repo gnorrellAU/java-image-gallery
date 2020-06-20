@@ -21,7 +21,12 @@ public class App {
       db.connect();
 	    // System.out.println(new App().getGreeting());
        //UserAdmin.demo();
-		port(5000);
+	String portString = System.getenv("JETTY_PORT");
+	if (portString == null || portString.equals(""))
+		port (5000);	
+    	else
+		port(Integer.parseInt(portString));
+	//  port(5000);
   //  	    get("/hello", (req, res) -> "Hello World");
 
 //	get("/goodbye", (req, rest) -> "Goodbye");
