@@ -1,9 +1,10 @@
 #!/usr/bin/bash
 
 # Install packages
+# Install packages
 yum -y update
 amazon-linux-extras install -y java-openjdk11
-yum install -y tree java-11-openjdk-devel git
+yum install -y emacs-nox nano tree python3 java-11-openjdk-devel git
 amazon-linux-extras install -y nginx1
 su ec2-user -l -c 'curl -s "https://get.sdkman.io" | bash && source .bashrc && sdk install gradle'
 
