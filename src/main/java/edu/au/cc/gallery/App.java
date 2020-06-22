@@ -27,7 +27,7 @@ public class App {
     	else
 		port(Integer.parseInt(portString));
 	//  port(5000);
-  //  	    get("/hello", (req, res) -> "Hello World");
+    	    get("/", (req, res) -> "Hello World");
 
 //	get("/goodbye", (req, rest) -> "Goodbye");
 
