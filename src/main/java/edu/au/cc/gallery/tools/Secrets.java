@@ -12,7 +12,7 @@ public class Secrets {
     public static String getSecretImageGallery() {
 
 //	String secretName = "sec-ig-image_gallery";
-	String secretName = "M5-sec-ig"
+	String secretName = "M5-sec-ig";
     	Region region = Region.US_EAST_1;
 
 	// Create a Secrets Manager client
