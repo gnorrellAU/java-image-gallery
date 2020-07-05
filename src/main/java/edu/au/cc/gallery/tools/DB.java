@@ -176,6 +176,29 @@ public ArrayList<String> listUsers() throws SQLException {
 		} else
 			 System.out.println("User with the username, " + user + " does not exist.");
         }
+	
+	public ResultSet executeQuery(String query) throws SQLException {
+	PreparedStatement stmt = connection.prepareStatement(query);
+	ResultSet rs = stmt.executeQuery();
+	return rs;
+    }
+
+	 public ResultSet executeQuery(String query, String[] values) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement(query);
+        for(int i=0; i < values.length; i++)
+                stmt.setString(i+1, values[i]);
+           return  stmt.executeQuery();
+        }
+
+
+
+	public void execute(String query, String[] values) throws SQLException {
+	PreparedStatement stmt = connection.prepareStatement(query);
+	for(int i=0; i < values.length; i++)
+	    	stmt.setString(i+1, values[i]);
+		stmt.execute();
+	}	
+
 
         public void close() throws SQLException {
                 connection.close();
