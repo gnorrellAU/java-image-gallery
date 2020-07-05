@@ -6,6 +6,8 @@
 	</head>
 	<body>
 		<h1>Users<h1>
-
+		{{# users }}
+		<li><a href="/admin/viewUser/{{ username }}">{{fullName}} ({{ username}})</a></li>
+		{{/users}}
 	</body>
 </html>
