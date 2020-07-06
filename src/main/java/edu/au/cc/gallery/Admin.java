@@ -1,5 +1,7 @@
 package edu.au.cc.gallery;
 
+import javax.servlet.MultipartConfigElement;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -186,12 +188,31 @@ public class Admin {
 	
 	}
 
+	public String userPhotosPost(Request req, Response res) {
+		try {
+			req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
+   			try (InputStream is = req.raw().getPart("uploaded_file").getInputStream()) {
+       			// Use the input stream to create a file
+			System.out.println(is);
+			PhotoDAO dao = getPhotosDAO();
+                        dao.addPhoto(new User(username, is));
+    		}			
+			res.redirect("/photos");
+   			 return "File uploaded";
+		//	System.out.println(photo);			
+			//return "";
+		} catch (Exception e) {
+			return "Error: " + e.getMessage();
+		}
+	}
+
 	public void addRoutes() {
 		get("/login", (req, res) -> login(req, res));
                 post("/login", (req, res) -> loginPost(req, res));
 		get("/debugSession", (req, res) -> debugSession(req, res));
 		before("/admin/*", (req, res) -> checkAdmin(req, res));	
 		get("/photos", (req, res) -> userPhotos(req, res));
+		post("/photos", (req, res) -> userPhotosPost(req, res));
 		get("/admin/users", (req, res) -> listUsers());
 		get("/admin/deleteUser/:username", (req, res) -> deleteUser(req, res));
 		get("/admin/deleteUserExec/:username", (req, res) -> deleteUserExec(req, res));
