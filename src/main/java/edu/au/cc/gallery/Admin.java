@@ -1,5 +1,14 @@
 package edu.au.cc.gallery;
 
+import software.amazon.awssdk.regions.Region;
+
+//import software.amazon.awssdk.services.secretsmanager.*;
+//import software.amazon.awssdk.services.secretsmanager.model.*;
+//import software.amazon.awssdk.services.s3.*;
+//import software.amazon.awssdk.*;
+
+import java.io.File;
+import java.nio.file.Paths;
 import javax.servlet.MultipartConfigElement;
 import java.io.InputStream;
 import java.util.Map;
@@ -20,6 +29,8 @@ import static spark.Spark.*;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 public class Admin {
+//	private String bucket_name = "edu.au.cc.image-gallery-bucket";
+//	Region region = Region.US_EAST_1;
 	
 	private static UserDAO getUserDAO() throws Exception {
 		return Postgres.getUserDAO();
@@ -166,7 +177,16 @@ public class Admin {
         }
 
 	public String userPhotos(Request req, Response res) {
-		try {
+/*		System.out.format("Objects in S3 bucket %s:\n", bucket_name);
+		final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(region).build();
+		ListObjectsV2Result result = s3.listObjectsV2(bucket_name);
+		List<S3ObjectSummary> objects = result.getObjectSummaries();
+		for (S3ObjectSummary os : objects) {
+    			System.out.println("* " + os.getKey());
+		}
+	}
+*/		
+			try {
 			String s = req.session().attribute("user");
 			List<Photo> p = getPhotosDAO().getPhotos(s);
 			System.out.println(p);
@@ -185,25 +205,28 @@ public class Admin {
 		} catch (Exception e) {
 			return "Error: "+e.getMessage();
 		}
-	
 	}
+	
+	
 
 	public String userPhotosPost(Request req, Response res) {
-		try {
-			req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
-   			try (InputStream is = req.raw().getPart("uploaded_file").getInputStream()) {
-       			// Use the input stream to create a file
+/*		String file_path;
+		String key_name = "wilma-picture1";
+		req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
+   		try {
+		       InputStream is = req.raw().getPart("uploaded_file").getInputStream();
 			System.out.println(is);
-			PhotoDAO dao = getPhotosDAO();
-                        dao.addPhoto(new User(username, is));
-    		}			
-			res.redirect("/photos");
-   			 return "File uploaded";
-		//	System.out.println(photo);			
-			//return "";
-		} catch (Exception e) {
-			return "Error: " + e.getMessage();
-		}
+			file_path = is;
+				
+		System.out.format("Uploading %s to S3 bucket %s...\n", file_path, bucket_name);
+		final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(region).build();
+		
+    			s3.putObject(bucket_name, key_name, new File(file_path));
+		}  catch (Exception e) {
+                        return "Error: " + e.getMessage();
+                }
+*/	
+		return "";
 	}
 
 	public void addRoutes() {
