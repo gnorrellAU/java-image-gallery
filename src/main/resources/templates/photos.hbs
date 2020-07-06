@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+        <body>
+
+        <h3>Your Photos:</h3>
+	<form method='post' enctype='multipart/form-data'>
+    		<input type='file' name='uploaded_file'>
+    		<button>Upload picture</button>
+	</form>
+
+		{{# photo }}
+		<li>{{imageName}}</li>
+                {{/photo}}
+	
+
+</body>
+</html>

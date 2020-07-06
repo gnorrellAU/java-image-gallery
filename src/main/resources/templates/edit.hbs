@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+
+        <body>
+
+	<h3>Edit a User:</h3>
+	<form action="/admin/edit/{{user.username}}" method="post">
+		password: <input type="text" name="password" value="{{ user.password }}"/> <br/><br/>
+		full_name: <input type="text" name="full_name" value="{{ user.fullName }}"/> <br/><br/>	
+		<input type="submit" value="Save" />
+	</form>
+</body>
+</html>
