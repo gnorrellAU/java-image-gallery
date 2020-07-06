@@ -167,12 +167,12 @@ public class Admin {
 		try {
 			String s = req.session().attribute("user");
 			List<Photo> p = getPhotosDAO().getPhotos(s);
-			Map<String, Object> model = new HashMap<String, Object>();
 			System.out.println(p);
+			Map<String, Object> model = new HashMap<String, Object>();
 			  List<Map<String, Object>> photoList = new ArrayList<>();
 			for (Photo pic : p) {
 				Map<String, Object> pics = new HashMap<String, Object>();
-				pics.put("username", pic.getUsername());
+			//	pics.put("username", pic.getUsername());
 				pics.put("photoName", pic.getImageName());
 				System.out.println(pic.getUsername() + pic.getImageName());
 				photoList.add(pics);
