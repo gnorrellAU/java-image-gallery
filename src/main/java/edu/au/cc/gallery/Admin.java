@@ -1,12 +1,8 @@
 package edu.au.cc.gallery;
 
 import software.amazon.awssdk.regions.Region;
-
-//import software.amazon.awssdk.services.secretsmanager.*;
-//import software.amazon.awssdk.services.secretsmanager.model.*;
-//import software.amazon.awssdk.services.s3.*;
-//import software.amazon.awssdk.*;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.File;
 import java.nio.file.Paths;
 import javax.servlet.MultipartConfigElement;
@@ -21,6 +17,7 @@ import edu.au.cc.gallery.User;
 import edu.au.cc.gallery.Photo;
 import edu.au.cc.gallery.PhotoDAO;
 import edu.au.cc.gallery.PostgresPhotoDAO;
+import edu.au.cc.gallery.S3;
 
 import spark.Request;
 import spark.Response;
@@ -29,10 +26,10 @@ import static spark.Spark.*;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 public class Admin {
-//	private String bucket_name = "edu.au.cc.image-gallery-bucket";
-//	Region region = Region.US_EAST_1;
+	private String bucket_name = "edu.au.cc.image-gallery-bucket";
+	String region = "US_EAST_1";
 	
-	private static UserDAO getUserDAO() throws Exception {
+private static UserDAO getUserDAO() throws Exception {
 		return Postgres.getUserDAO();
 	}
 
@@ -226,7 +223,26 @@ public class Admin {
                         return "Error: " + e.getMessage();
                 }
 */	
-		return "";
+		String file_name;
+		String key_name = req.session().attribute("user") + "/"; 
+		S3 s3 = new S3();
+		s3.connect();
+		req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
+    		try {
+			InputStream is = req.raw().getPart("uploaded_file").getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			StringBuilder out = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				out.append(line);
+			}
+			file_name = out.toString();
+			s3.putObject(bucket_name, key_name, file_name);
+		} catch (Exception e) {
+			return "Error: " + e.getMessage();
+		}
+    		return "File uploaded";
+
 	}
 
 	public void addRoutes() {

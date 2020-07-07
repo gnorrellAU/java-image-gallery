@@ -19,7 +19,7 @@ import org.json.JSONObject;
 public class DB {
 
 //	private static final String dbUrl = "jdbc:postgresql://image-gallery.ceza2uidpxb7.us-east-1.rds.amazonaws.com/image_gallery";
-  	private static final String dbUrl = "jdbc:postgresql://" + System.getenv("PG_HOST");
+  	private static final String dbUrl = "jdbc:postgresql://" + System.getenv("PG_HOST") + "/";
 	private static final String user = System.getenv("IG_USER");
 	private static final String password = System.getenv("PG_PASSWD");
   	private Connection connection;
