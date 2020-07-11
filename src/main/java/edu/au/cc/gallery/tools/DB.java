@@ -18,11 +18,14 @@ import org.json.JSONObject;
 
 public class DB {
 
-	private static final String dbUrl = "jdbc:postgresql://image-gallery.ceza2uidpxb7.us-east-1.rds.amazonaws.com/image_gallery";
-        private Connection connection;
+//	private static final String dbUrl = "jdbc:postgresql://image-gallery.ceza2uidpxb7.us-east-1.rds.amazonaws.com/image_gallery";
+  	private static final String dbUrl = "jdbc:postgresql://" + System.getenv("PG_HOST") + "/";
+	private static final String user = System.getenv("IG_USER");
+	private static final String password = System.getenv("PG_PASSWD");
+  	private Connection connection;
 
   //	Secrets Manager
-	private JSONObject getSecret() {
+/*	private JSONObject getSecret() {
 		String s = Secrets.getSecretImageGallery();
 		return new JSONObject(s);
 	}
@@ -30,12 +33,12 @@ public class DB {
 	private String getPassword(JSONObject secret) {
 		return secret.getString("password");
 	}
-
+*/
         public void connect() throws SQLException {
                 try {
                         Class.forName("org.postgresql.Driver");
-			JSONObject secret = getSecret();
-                        connection = DriverManager.getConnection(dbUrl, "image_gallery", getPassword(secret));
+		//	JSONObject secret = getSecret();
+                        connection = DriverManager.getConnection(dbUrl, user, password);
                 } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                         System.exit(1);
@@ -176,6 +179,29 @@ public ArrayList<String> listUsers() throws SQLException {
 		} else
 			 System.out.println("User with the username, " + user + " does not exist.");
         }
+	
+	public ResultSet executeQuery(String query) throws SQLException {
+	PreparedStatement stmt = connection.prepareStatement(query);
+	ResultSet rs = stmt.executeQuery();
+	return rs;
+    }
+
+	 public ResultSet executeQuery(String query, String[] values) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement(query);
+        for(int i=0; i < values.length; i++)
+                stmt.setString(i+1, values[i]);
+           return  stmt.executeQuery();
+        }
+
+
+
+	public void execute(String query, String[] values) throws SQLException {
+	PreparedStatement stmt = connection.prepareStatement(query);
+	for(int i=0; i < values.length; i++)
+	    	stmt.setString(i+1, values[i]);
+		stmt.execute();
+	}	
+
 
         public void close() throws SQLException {
                 connection.close();

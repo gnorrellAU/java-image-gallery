@@ -26,6 +26,14 @@ public class S3 {
 	client.createBucket(createBucketRequest);
     }
 
+  /*  public void listObjects() {
+	ListObjectsV2Result result = s3.listObjectsV2(bucket_name);
+	List<S3ObjectSummary> objects = result.getObjectSummaries();
+	for (S3ObjectSummary os : objects) {
+    		System.out.println("* " + os.getKey());
+	}
+    }
+*/
     public void putObject(String bucketName, String key, String value) {
 	PutObjectRequest por = PutObjectRequest.builder()
 	    .bucket(bucketName)
@@ -34,11 +42,12 @@ public class S3 {
 	client.putObject(por, RequestBody.fromString(value));
     }
 
-    public static void demo() {
+/*    public static void demo() {
 	String bucketName = "edu.au.cc.image-gallery-bucket";
 	S3 s3 = new S3();
 	s3.connect();
 	//s3.createBucket(bucketName);
 	s3.putObject(bucketName, "banana", "yellow");
     }
+    */
 }

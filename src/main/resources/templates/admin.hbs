@@ -5,30 +5,39 @@
 		<meta charset= "utf=8" />
 	</head>
 	<body>
-		<h1>Users:</h1>
+		 <h1>Users</h1>
+				 {{# users }}
+                <li><a href="/admin/users/{{ username }}">{{fullName}} ({{ username}})</a>
+		--
+		<a href="/admin/deleteUser/{{ username }}">Delete</a></li>
+		--
+		<a href="/admin/edit/{{ username }}">Edit</a></li>
+		{{/users}}
+
+	<!--	<h1>Users:</h1>
 		<ul>
 			{{#each users}}
 			<li><a href = "/admin/edit?user={{this}}">{{this}}</a> 
-			<!--	<form action="/admin/delete" method="get">-->
-			<button type="button"> 
+			<form action="/admin/delete" method="get">-->
+		<!--	<button type="button"> 
 				<a href="/admin/delete?user={{this}}">Delete User</a></button>
 				</form>
 			</li>
 					{{/each}}
 		</ul>
-		
+		-->
 <!--		<form action="/admin/edit" method="post">
 			 password: <input type="text" name="password" /> <br/><br>
                         full_name: <input type="text" name="full_name" /> <br/><br>
 			<input type= "submit" value="Edit User"/>
 		</form>
 -->
-		<h3>Add a User:</h3>
+<!--		<h3>Add a User:</h3>
 		<form action="/admin/add" method="get">
 			username: <input type="text" name="username" /> <br/><br>
 			password: <input type="text" name="password" /> <br/><br>
 			full_name: <input type="text" name="full_name" /> <br/><br>
 			<input type="submit" value="Add User"/>
-
+-->
 	</body>
 </html>
